@@ -9,19 +9,23 @@ const incrementIndexAndSetCat = cat => ({ index, cats }) => ({
   [cat]: cats[index],
 });
 
+const updateCats = newCats => ({ cats }) => ({
+  cats: [...cats.slice(cats.length - 2), ...newCats],
+});
 export default class HomePage extends Component {
   state = {
     cats: [],
     firstCat: {},
     secondCat: {},
     index: 0,
+    isLoading: true,
   };
 
   componentDidMount = () => this.fetchCats();
 
   fetchCats = async () => {
     const cats = await getCatsWithLimit(NB_LIMIt);
-    this.setState({ cats }, this.getCats);
+    this.setState({ cats, isLoading: false }, this.getCats);
   };
 
   getCats = () => {
@@ -29,13 +33,21 @@ export default class HomePage extends Component {
     this.setState(incrementIndexAndSetCat('secondCat'));
   };
 
-  changeCatsDisplayed = () => {
+  changeCatsDisplayed = async () => {
+    const { index, cats } = this.state;
+    if (index === 10) {
+      this.setState({ index: 0 });
+    }
+    if (index >= cats.length - 2) {
+      const cats = await getCatsWithLimit(NB_LIMIt);
+      this.setState(updateCats(cats));
+    }
     this.getCats();
   };
 
   render() {
-    const { firstCat, secondCat } = this.state;
-    return (
+    const { isLoading, firstCat, secondCat } = this.state;
+    const CatsContainer = !isLoading && (
       <div>
         <CatContainer
           img={firstCat.url}
@@ -47,5 +59,7 @@ export default class HomePage extends Component {
         />
       </div>
     );
+    const Loader = isLoading && <div>LOADING</div>;
+    return CatsContainer || Loader;
   }
 }
