@@ -1,10 +1,9 @@
 import React from 'react';
 
-const CatContainer = ({ img, changeCatsDisplayed }) => {
+const CatContainer = ({ img, nextCats }) => {
   return (
     <div>
-      <img src={img} alt="Cat" />
-      <button onClick={changeCatsDisplayed}>I like it !</button>
+      <img src={img} alt="Cat" onClick={nextCats} />
     </div>
   );
 };
