@@ -29,12 +29,22 @@ export default class HomePage extends Component {
     this.setState(incrementIndexAndSetCat('secondCat'));
   };
 
+  changeCatsDisplayed = () => {
+    this.getCats();
+  };
+
   render() {
     const { firstCat, secondCat } = this.state;
     return (
       <div>
-        <CatContainer img={firstCat.url} />
-        <CatContainer img={secondCat.url} />
+        <CatContainer
+          img={firstCat.url}
+          changeCatsDisplayed={this.changeCatsDisplayed}
+        />
+        <CatContainer
+          img={secondCat.url}
+          changeCatsDisplayed={this.changeCatsDisplayed}
+        />
       </div>
     );
   }
