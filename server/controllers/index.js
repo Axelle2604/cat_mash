@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { getCatsFromJSON } = require('../store/index');
+const { getCatsFromJSON, updateScores } = require('../store/index');
 
 const getCats = async (req, res) => {
   const cats = await getCatsFromJSON();
@@ -14,4 +14,10 @@ const getCatsWithLimit = async (req, res) => {
   res.send(someCats).status(200);
 };
 
-module.exports = { getCats, getCatsWithLimit };
+const updateCatsScores = async (req, res) => {
+  const catsScores = req.body;
+  updateScores(catsScores);
+  res.sendStatus(200);
+};
+
+module.exports = { getCats, getCatsWithLimit, updateCatsScores };
