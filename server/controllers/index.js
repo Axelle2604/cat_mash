@@ -37,11 +37,12 @@ const getCatsScores = async (req, res) => {
     const { offset, limit } = req.query;
     const scores = await getScores(offset, limit);
     const catsScores = scores.map(
-      ({ points, nb_matchs: nbMatchs, cat_id: catId }) => {
+      ({ points, nb_matchs: nbMatchs, cat_id: catId, img_url: imgUrl }) => {
         return {
           winRate: points > 0 ? winRateCalcul(points, nbMatchs) : 0,
           points,
           catId,
+          imgUrl,
         };
       }
     );

@@ -22,7 +22,7 @@ export default class HomePage extends Component {
     secondCat: {},
     index: 0,
     isLoading: true,
-    isScoresDisplayed: false,
+    isScoresDisplayed: true,
   };
 
   componentDidMount = () => this.fetchCats();

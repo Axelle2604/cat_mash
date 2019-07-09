@@ -1,6 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CatScore from './CatScore';
 import { getCatsScores } from '../../services/cats';
+import {
+  Container,
+  ContainerScores,
+  Header,
+  ContainerRows,
+  Loader,
+} from './style/scorePageStyled';
 
 const NB_SCORES_TO_ADD = 10;
 
@@ -28,21 +35,36 @@ export default class ScoresPage extends Component {
   render() {
     const { closeScoresWindow } = this.props;
     const { scores, isLoading } = this.state;
-    const loader = isLoading && <div>LOADING</div>;
-    const scoresList = !isLoading && (
-      <div>
-        <div>
-          <div>Scores</div>
-          <button onClick={closeScoresWindow}>Close</button>
-        </div>
-        {scores.map(({ points, catId, winRate }) => (
-          <CatScore points={points} key={catId} winRate={winRate} />
-        ))}
-        <div>
-          <button onClick={this.fetchCatsScores}>Show more</button>
-        </div>
-      </div>
+    const loader = isLoading && (
+      <Loader>
+        <i class="fas fa-spinner" />
+      </Loader>
     );
-    return loader || scoresList;
+    const scoresList = !isLoading && (
+      <Fragment>
+        <Header>
+          <div>Scores</div>
+          <i class="fas fa-times" onClick={closeScoresWindow} />
+        </Header>
+        <ContainerRows>
+          {scores.map(({ points, catId, winRate, imgUrl }) => (
+            <CatScore
+              points={points}
+              key={catId}
+              winRate={winRate}
+              imgUrl={imgUrl}
+            />
+          ))}
+          <div>
+            <button onClick={this.fetchCatsScores}>Show more</button>
+          </div>
+        </ContainerRows>
+      </Fragment>
+    );
+    return (
+      <Container>
+        <ContainerScores>{loader || scoresList}</ContainerScores>
+      </Container>
+    );
   }
 }
