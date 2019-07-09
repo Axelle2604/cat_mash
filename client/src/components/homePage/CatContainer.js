@@ -1,11 +1,8 @@
 import React from 'react';
+import { Container } from './style/catContainerStyled';
 
 const CatContainer = ({ img, name, nextCats }) => {
-  return (
-    <div>
-      <img src={img} alt="Cat" onClick={nextCats.bind(null, name)} />
-    </div>
-  );
+  return <Container img={img} onClick={nextCats.bind(null, name)} />;
 };
 
 export default CatContainer;

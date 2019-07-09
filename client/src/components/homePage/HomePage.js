@@ -1,7 +1,18 @@
-import React, { Component } from 'react';
-import { getCatsWithLimit, updateCatsScores } from '../../services/cats';
+import React, { Component, Fragment } from 'react';
+import {
+  getCatsWithLimit,
+  updateCatsScores,
+  getCats,
+} from '../../services/cats';
 import CatContainer from './CatContainer';
 import ScoresPages from '../scoresPage/ScoresPage';
+import {
+  Container,
+  SubContainer,
+  Title,
+  ContainerButton,
+  Loader,
+} from './style/homePageStyled';
 
 const NB_LIMIT = 10;
 
@@ -22,7 +33,7 @@ export default class HomePage extends Component {
     secondCat: {},
     index: 0,
     isLoading: true,
-    isScoresDisplayed: true,
+    isScoresDisplayed: false,
   };
 
   componentDidMount = () => this.fetchCats();
@@ -61,28 +72,43 @@ export default class HomePage extends Component {
   };
 
   render() {
+    console.log(getCats());
     const { isLoading, firstCat, secondCat, isScoresDisplayed } = this.state;
     const scores = isScoresDisplayed && (
       <ScoresPages closeScoresWindow={this.closeScoresWindow} />
     );
+    const scoresButton = !isScoresDisplayed && (
+      <ContainerButton>
+        <div onClick={this.onClickShowScores}>Show scores</div>
+      </ContainerButton>
+    );
     const CatsContainer = !isLoading && (
-      <div>
+      <Fragment>
         {scores}
-        <CatContainer
-          img={firstCat.url}
-          name="firstCat"
-          nextCats={this.nextCats}
-        />
-        <CatContainer
-          img={secondCat.url}
-          name="secondCat"
-          nextCats={this.nextCats}
-        />
-        <button onClick={this.onClickShowScores}>Show scores</button>
-      </div>
+        <Title>
+          <div>CAT MASH</div>
+        </Title>
+        {scoresButton}
+        <SubContainer>
+          <CatContainer
+            img={firstCat.url}
+            name="firstCat"
+            nextCats={this.nextCats}
+          />
+          <CatContainer
+            img={secondCat.url}
+            name="secondCat"
+            nextCats={this.nextCats}
+          />
+        </SubContainer>
+      </Fragment>
     );
 
-    const Loader = isLoading && <div>LOADING</div>;
-    return Loader || CatsContainer;
+    const loader = isLoading && (
+      <Loader>
+        <i className="fas fa-spinner" />
+      </Loader>
+    );
+    return <Container>{loader || CatsContainer}</Container>;
   }
 }

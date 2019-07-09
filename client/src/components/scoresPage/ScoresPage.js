@@ -37,14 +37,14 @@ export default class ScoresPage extends Component {
     const { scores, isLoading } = this.state;
     const loader = isLoading && (
       <Loader>
-        <i class="fas fa-spinner" />
+        <i className="fas fa-spinner" />
       </Loader>
     );
     const scoresList = !isLoading && (
       <Fragment>
         <Header>
           <div>Scores</div>
-          <i class="fas fa-times" onClick={closeScoresWindow} />
+          <i className="fas fa-times" onClick={closeScoresWindow} />
         </Header>
         <ContainerRows>
           {scores.map(({ points, catId, winRate, imgUrl }) => (
