@@ -1,11 +1,15 @@
 import React from 'react';
+import { Row, ContainerImg } from './style/catScoreStyled';
 
-const CatScore = ({ points, winRate }) => {
+const CatScore = ({ points, winRate, imgUrl }) => {
   return (
-    <div>
-      <div>{winRate}</div>
-      <div>{points}</div>
-    </div>
+    <Row>
+      <div>
+        <ContainerImg imgUrl={imgUrl} />
+      </div>
+      <div>{winRate}%</div>
+      <div>{points}w</div>
+    </Row>
   );
 };
 
