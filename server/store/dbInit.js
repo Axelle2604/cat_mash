@@ -8,10 +8,11 @@ const pool = new Pool({
 });
 
 const table = {
-  name: 'scores',
+  name: 'cats',
   values: [
     { name: 'id', type: 'BIGSERIAL' },
     { name: 'cat_id', type: 'TEXT' },
+    { name: 'img_url', type: 'TEXT' },
     { name: 'nb_matchs', type: 'INT' },
     { name: 'points', type: 'INT' },
   ],
@@ -41,11 +42,11 @@ const fillTable = async () => {
   try {
     const cats = await getCatsFromJSON();
     await Promise.all(
-      cats.map(({ id }) =>
+      cats.map(({ id, url }) =>
         pool.query(
           `INSERT INTO ${
             table.name
-          } (cat_id, nb_matchs, points) VALUES ('${id}', 0, 0)`
+          } (cat_id, img_url, nb_matchs, points) VALUES ('${id}', '${url}', 0, 0)`
         )
       )
     );

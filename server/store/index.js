@@ -24,11 +24,11 @@ const updateScores = async catsScores => {
     return catsScores.map(({ isWon, catId }) => {
       if (isWon) {
         return pool.query(
-          `UPDATE scores SET nb_matchs = nb_matchs+1, points = points+1 WHERE cat_id = '${catId}'`
+          `UPDATE cats SET nb_matchs = nb_matchs+1, points = points+1 WHERE cat_id = '${catId}'`
         );
       }
       return pool.query(
-        `UPDATE scores SET nb_matchs = nb_matchs+1 WHERE cat_id = '${catId}'`
+        `UPDATE cats SET nb_matchs = nb_matchs+1 WHERE cat_id = '${catId}'`
       );
     });
   } catch (e) {
@@ -39,7 +39,7 @@ const updateScores = async catsScores => {
 const getScores = async (offset, limit) => {
   try {
     const { rows: scores } = await pool.query(
-      `SELECT * FROM scores ORDER BY points DESC OFFSET ${offset} LIMIT ${limit}`
+      `SELECT * FROM cats ORDER BY points DESC OFFSET ${offset} LIMIT ${limit}`
     );
     return scores;
   } catch (e) {
