@@ -1,9 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-  getCatsWithLimit,
-  updateCatsScores,
-  getCats,
-} from '../../services/cats';
+import { getCatsWithLimit, updateCatsScores } from '../../services/cats';
 import CatContainer from './CatContainer';
 import ScoresPages from '../scoresPage/ScoresPage';
 import {
@@ -72,7 +68,6 @@ export default class HomePage extends Component {
   };
 
   render() {
-    console.log(getCats());
     const { isLoading, firstCat, secondCat, isScoresDisplayed } = this.state;
     const scores = isScoresDisplayed && (
       <ScoresPages closeScoresWindow={this.closeScoresWindow} />

@@ -39,7 +39,7 @@ const updateScores = async catsScores => {
 const getScores = async (offset, limit) => {
   try {
     const { rows: scores } = await pool.query(
-      `SELECT * FROM cats ORDER BY points DESC OFFSET ${offset} LIMIT ${limit}`
+      `SELECT * FROM cats ORDER BY points DESC, cat_id ASC OFFSET ${offset} LIMIT ${limit}`
     );
     return scores;
   } catch (e) {
