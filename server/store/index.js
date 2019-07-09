@@ -9,10 +9,14 @@ const pool = new Pool({
 const BASE_URL = 'https://latelier.co/data/cats.json';
 
 const getCatsFromJSON = async () => {
-  const {
-    data: { images: cats },
-  } = await axios.get(BASE_URL);
-  return cats;
+  try {
+    const {
+      data: { images: cats },
+    } = await axios.get(BASE_URL);
+    return cats;
+  } catch (e) {
+    console.error;
+  }
 };
 
 const updateScores = async catsScores => {
@@ -32,4 +36,15 @@ const updateScores = async catsScores => {
   }
 };
 
-module.exports = { getCatsFromJSON, updateScores };
+const getScores = async (offset, limit) => {
+  try {
+    const { rows: scores } = await pool.query(
+      `SELECT * FROM scores ORDER BY points DESC OFFSET ${offset} LIMIT ${limit}`
+    );
+    return scores;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+module.exports = { getCatsFromJSON, updateScores, getScores };

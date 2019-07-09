@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getCatsWithLimit, updateCatsScores } from '../../services/cats';
 import CatContainer from './CatContainer';
+import ScoresPages from '../scoresPage/ScoresPage';
 
 const NB_LIMIT = 10;
 
@@ -21,6 +22,7 @@ export default class HomePage extends Component {
     secondCat: {},
     index: 0,
     isLoading: true,
+    isScoresDisplayed: false,
   };
 
   componentDidMount = () => this.fetchCats();
@@ -50,10 +52,22 @@ export default class HomePage extends Component {
     this.selectTwoCats();
   };
 
+  onClickShowScores = async () => {
+    this.setState({ isScoresDisplayed: true });
+  };
+
+  closeScoresWindow = () => {
+    this.setState({ isScoresDisplayed: false });
+  };
+
   render() {
-    const { isLoading, firstCat, secondCat } = this.state;
+    const { isLoading, firstCat, secondCat, isScoresDisplayed } = this.state;
+    const scores = isScoresDisplayed && (
+      <ScoresPages closeScoresWindow={this.closeScoresWindow} />
+    );
     const CatsContainer = !isLoading && (
       <div>
+        {scores}
         <CatContainer
           img={firstCat.url}
           name="firstCat"
@@ -64,8 +78,10 @@ export default class HomePage extends Component {
           name="secondCat"
           nextCats={this.nextCats}
         />
+        <button onClick={this.onClickShowScores}>Show scores</button>
       </div>
     );
+
     const Loader = isLoading && <div>LOADING</div>;
     return Loader || CatsContainer;
   }

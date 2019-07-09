@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { getCatsFromJSON, updateScores } = require('../store/index');
+const { getCatsFromJSON, updateScores, getScores } = require('../store/index');
 
 const getCats = async (req, res) => {
   const cats = await getCatsFromJSON();
@@ -20,4 +20,23 @@ const updateCatsScores = async (req, res) => {
   res.sendStatus(200);
 };
 
-module.exports = { getCats, getCatsWithLimit, updateCatsScores };
+const getCatsScores = async (req, res) => {
+  const { offset, limit } = req.query;
+  const scores = await getScores(offset, limit);
+  const catsScores = scores.map(
+    ({ points, nb_matchs: nbMatchs, cat_id: catId }) => {
+      return {
+        winRate: points > 0 ? winRateCalcul(points, nbMatchs) : 0,
+        points,
+        catId,
+      };
+    }
+  );
+  res.send(catsScores).status(200);
+};
+
+const winRateCalcul = (points, matchs) => {
+  return Math.round((points / matchs) * 100);
+};
+
+module.exports = { getCats, getCatsWithLimit, updateCatsScores, getCatsScores };
