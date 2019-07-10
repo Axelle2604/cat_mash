@@ -12,13 +12,13 @@ import {
 
 const NB_LIMIT = 10;
 
-const setCurrentCats = ({ index, cats }) => ({
+export const setCurrentCats = ({ index, cats }) => ({
   firstCat: cats[index + 1],
   secondCat: cats[index + 2],
   index: index + 2,
 });
 
-const updateCats = newCats => ({ cats }) => ({
+export const updateCats = newCats => ({ cats }) => ({
   cats: [...cats.slice(cats.length - NB_LIMIT / 2), ...newCats],
   index: 0,
 });
