@@ -11,7 +11,7 @@ import {
 
 const NB_SCORES_TO_ADD = 10;
 
-const addToScores = scoresToAdd => ({ scores, offset, limit }) => ({
+export const addToScores = scoresToAdd => ({ scores, offset }) => ({
   scores: [...scores, ...scoresToAdd],
   isLoading: false,
   offset: offset + NB_SCORES_TO_ADD,

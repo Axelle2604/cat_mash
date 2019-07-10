@@ -1,10 +1,10 @@
 const _ = require('lodash');
-const { getCatsFromJSON, updateScores, getScores } = require('../store/index');
+const CatStore = require('../store/index');
 
 const getCatsWithLimit = async (req, res) => {
   try {
     const limitNumber = req.query.limit;
-    const cats = await getCatsFromJSON();
+    const cats = await CatStore.getCatsFromJSON();
     const shuffledCats = _.shuffle(cats);
     const someCats = shuffledCats.slice(0, limitNumber);
     res.send(someCats).status(200);
@@ -16,7 +16,7 @@ const getCatsWithLimit = async (req, res) => {
 const updateCatsScores = async (req, res) => {
   try {
     const catsScores = req.body;
-    updateScores(catsScores);
+    CatStore.updateScores(catsScores);
     res.sendStatus(201);
   } catch {
     res.status(500);
@@ -26,7 +26,7 @@ const updateCatsScores = async (req, res) => {
 const getCatsScores = async (req, res) => {
   try {
     const { offset, limit } = req.query;
-    const scores = await getScores(offset, limit);
+    const scores = await CatStore.getScores(offset, limit);
     const catsScores = scores.map(
       ({ points, nb_matchs: nbMatchs, cat_id: catId, img_url: imgUrl }) => {
         return {
@@ -47,4 +47,9 @@ const winRateCalcul = (points, matchs) => {
   return Math.round((points / matchs) * 100);
 };
 
-module.exports = { getCatsWithLimit, updateCatsScores, getCatsScores };
+module.exports = {
+  getCatsWithLimit,
+  updateCatsScores,
+  getCatsScores,
+  winRateCalcul,
+};
